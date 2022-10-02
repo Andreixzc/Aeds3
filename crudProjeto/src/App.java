@@ -21,8 +21,8 @@ public class App {
 
     public static void criaContaModel() throws FileNotFoundException {
         Crud crud = new Crud();
-        System.out.println("jie");
         Scanner scanner = new Scanner(System.in);
+        System.out.println("caralho");
         Conta conta = new Conta();
         System.out.println("Criacao de conta:");
         System.out.println("Digite seu nome:");
