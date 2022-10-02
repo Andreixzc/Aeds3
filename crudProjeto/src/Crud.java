@@ -4,11 +4,13 @@ import java.io.RandomAccessFile;
 import java.util.ArrayList;
 public class Crud {
     final String nomeArquivo = "conta.db";
-
-    public Crud() throws FileNotFoundException {
-        RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
+    public Crud(){
+        try {
+            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro ao criar o arquivo");
+        }
     }
-
     public boolean verificaNome(String nome){
         ArrayList<Conta> lista = listar();
         for (Conta conta : lista) {
@@ -109,6 +111,7 @@ public class Crud {
                 }
 
             }
+            arquivo.close();
         } catch (Exception e) {
             System.out.println("Erro ao abrir o arquivo!");
         }
@@ -151,7 +154,6 @@ public class Crud {
                             return true;
                         }
                     }
-    
                 }
             }
             arquivo.close();
@@ -188,17 +190,16 @@ public class Crud {
 
 
     }
-    public boolean transferencia(Conta origem, Conta destino, float valor){
-        Conta c1 = BuscarPorId(origem.idConta);
-        Conta c2 = BuscarPorId(destino.idConta);
-        if (c1 == null || c2 == null) {
+    public boolean transferencia(int idOrigem,int IdDestino, float valor){
+        Conta contaOrigem = BuscarPorId(idOrigem);
+        Conta contaDestino = BuscarPorId(IdDestino);
+        if (contaOrigem == null || contaDestino == null) {
             return false;
         } else{
-            origem.transferenciasRealizadas = origem.transferenciasRealizadas + 1;
-            destino.transferenciasRealizadas = destino.transferenciasRealizadas + 1;
-            origem.saldoConta = origem.saldoConta - valor;
-            destino.saldoConta = destino.saldoConta + valor;
-
+            contaOrigem.transferenciasRealizadas = contaOrigem.transferenciasRealizadas + 1;
+            contaDestino.transferenciasRealizadas = contaDestino.transferenciasRealizadas + 1;
+            contaOrigem.saldoConta = contaOrigem.saldoConta - valor;
+            contaDestino.saldoConta = contaDestino.saldoConta + valor;
         }
         return true;
     }
