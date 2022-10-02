@@ -7,17 +7,21 @@ public class Acoes {
 
     private Acoes() {}
 
-    public static void BuscarPorId() {
+    public static void BuscarPorIdModel() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite o ID:");
         int id = Integer.parseInt(sc.nextLine());
         Conta conta = crud.BuscarPorId(id);
-        System.out.println(conta.toString());
-        sc.close();
+        if (conta!= null) {
+            System.out.println(conta.toString());
+        } else {
+            System.out.println("Conta não encontrada");
+        }
+    
     }
 
     public static void updateModel() throws IOException {
-        Conta conta = criaContaModel();
+        Conta conta = geradorDeConta();
         if (crud.update(conta)) {
             System.out.println("Update realizado com sucesso");
         } else {
@@ -25,7 +29,7 @@ public class Acoes {
         }
     }
 
-    public static void deleteById() {
+    public static void deleteByIdModel() {
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite o ID a ser deletado:");
         int id = Integer.parseInt(sc.nextLine());
@@ -34,10 +38,9 @@ public class Acoes {
         } else {
             System.out.println("Erro ao deletar");
         }
-        sc.close();
     }
 
-    public static Conta criaContaModel() throws IOException {
+    public static Conta geradorDeConta() throws IOException {
         Crud crud = new Crud();
         Scanner scanner = new Scanner(System.in);
         Conta conta = new Conta();
@@ -75,20 +78,20 @@ public class Acoes {
         System.out.println("Saldo da conta:");
         conta.saldoConta = scanner.nextFloat();
         conta.transferenciasRealizadas = 0;
-        scanner.close();
         return conta;
     }
 
-    public void criarContaCrud(Conta conta) throws IOException {
+    public static void criarContaModel() throws IOException{
+        criarContaModel(geradorDeConta());
+    }
+    public static void criarContaModel(Conta conta) throws IOException {
         Crud crud = new Crud();
         if (crud.criarConta(conta)) {
             System.out.println("Conta criada com sucesso");
-        } else {
-            System.out.println("Erro ao criar conta");
+            System.out.println(conta.toString());
         }
 
     }
-
     public static void transferenciaModel() throws FileNotFoundException {
         Crud crud = new Crud();
         Scanner scanner = new Scanner(System.in);
@@ -106,9 +109,7 @@ public class Acoes {
         } else {
             System.out.println("Erro na transferencia");
         }
-        scanner.close();
     }
-
     public static void menu() {
         System.out.println("Menu:");
         System.out.println("1 - criar conta:");

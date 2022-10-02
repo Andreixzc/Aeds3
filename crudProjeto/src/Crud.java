@@ -1,16 +1,13 @@
-import java.io.FileNotFoundException;
+import java.io.File;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.ArrayList;
 public class Crud {
     final String nomeArquivo = "conta.db";
-    public Crud(){
-        try {
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
-        } catch (FileNotFoundException e) {
-            System.out.println("Erro ao criar o arquivo");
-        }
-    }
+    private RandomAccessFile arquivo;
+    public Crud(){}
+
+
     public boolean verificaNome(String nome){
         ArrayList<Conta> lista = listar();
         for (Conta conta : lista) {
@@ -24,36 +21,48 @@ public class Crud {
     public boolean criarConta(Conta conta) throws IOException {
         byte[] contaConvertida;
         conta.idConta = retornaUltimoID();
-        contaConvertida = conta.converteContaEmByte();
 
         try {
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
+            arquivo = new RandomAccessFile(nomeArquivo, "rw");
+
             arquivo.seek(0);
             arquivo.writeInt(conta.idConta);
             arquivo.seek(arquivo.length());
             arquivo.writeChar(' ');
+            contaConvertida = conta.converteContaEmByte();
             arquivo.writeInt(contaConvertida.length);
             arquivo.write(contaConvertida);
             arquivo.close();
             return true;
 
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("Erro ao criar conta!");
             return false;
         }
     }
     public int retornaUltimoID() {
         int id;
-        try {
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
-            arquivo.seek(0);
-            id = arquivo.readInt();
-            arquivo.close();
-            return id++;
+        
 
-        } catch (Exception e) {
-            return -1;
+
+
+        if (new File(nomeArquivo).exists()) {
+            try {
+                arquivo = new RandomAccessFile(nomeArquivo, "rw");
+                arquivo.seek(0);
+                id = arquivo.readInt();
+                arquivo.close();
+                return id++;
+    
+            } catch (Exception e) {
+                return -1;
+            } 
+        } else {
+            return id = 1;
         }
+
+        
     }
     public Conta BuscarPorId(int id) {
         int tamanhoRegistro;
@@ -168,9 +177,9 @@ public class Crud {
         ArrayList<Conta> list = new ArrayList<>();
         
         try {
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
+            arquivo = new RandomAccessFile(nomeArquivo, "rw");
             arquivo.seek(4);
-            while (arquivo.getFilePointer()<arquivo.length()) {
+            while (arquivo.getFilePointer() < arquivo.length()) {
                 lapide = arquivo.readChar();
                 vetorByte = new byte[arquivo.readInt()];
                 arquivo.read(vetorByte);
@@ -184,6 +193,7 @@ public class Crud {
             arquivo.close();
 
         } catch (Exception e) {
+            System.out.println(e);
             System.out.println("Erro ao abrir o arquivo");
         }
         return list;

@@ -39,6 +39,7 @@ public class Conta {
         //Este metodo converte a conta instanciada em um vetor de byte.
         ByteArrayOutputStream vetorByte = new ByteArrayOutputStream();//Escrita
         DataOutputStream buffer = new DataOutputStream(vetorByte);//Escrita|buffer?
+        System.out.println("printando ID da conta no metodo converteContaByte " + idConta);
         buffer.writeInt(idConta);
         buffer.writeUTF(nomePessoa);
         for (int i = 0; i < email.length; i++) {

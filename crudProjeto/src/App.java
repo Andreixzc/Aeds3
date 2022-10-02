@@ -7,22 +7,21 @@ public class App {
         do {
             Acoes.menu();
             System.out.println("Digite a opcao:");
-            option = Integer.parseInt(sc.nextLine());
+            option = Integer.parseInt(sc.next());
             if (option != 0) {
                 if (option == 1) {
-                    Acoes.criaContaModel();
+                    Acoes.criarContaModel();
                 } else if (option == 2) {
                     Acoes.transferenciaModel();
                 } else if (option == 3) {
-                   Acoes.BuscarPorId();
+                    Acoes.BuscarPorIdModel();
                 } else if (option == 4) {
                     Acoes.updateModel();
                 } else if (option == 5) {
-                    Acoes.deleteById();
+                    Acoes.deleteByIdModel();
                 }
             }
         } while (option != 0);
-        sc.close();
     }
 
 
