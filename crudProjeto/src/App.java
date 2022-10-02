@@ -22,7 +22,6 @@ public class App {
     public static void criaContaModel() throws FileNotFoundException {
         Crud crud = new Crud();
         Scanner scanner = new Scanner(System.in);
-        System.out.println("caralho");
         Conta conta = new Conta();
         System.out.println("Criacao de conta:");
         System.out.println("Digite seu nome:");
@@ -32,13 +31,23 @@ public class App {
         conta.emailQnt(Integer.parseInt(scanner.nextLine()));
 
         for (int i = 0; i < conta.email.length; i++) {
-            int qnt = i +1;
+            int qnt = i + 1;
             System.out.println("Digite o " + qnt + " Email:");
             conta.email[i] = scanner.nextLine();
         }
-        System.out.println("Digite o nome do Usuario:");
-        conta.nomeUsuario = scanner.nextLine();
-        //Verifica nome(scanner.nextline())
+        while (true) {
+            System.out.println("Digite o nome do Usuario:");
+            String nome = scanner.nextLine();
+            if (crud.verificaNome(nome)) {
+                conta.nomeUsuario = nome;
+                break;
+            } else {
+                System.out.println("O nome não está disponível");
+                System.out.println("Digite outro nome de Usuario:");
+                nome = scanner.nextLine();
+                continue;
+            }
+        }
         System.out.println("Digite sua senha:");
         conta.senha = scanner.nextLine();
         System.out.println("Digite seu CPF:");
@@ -48,9 +57,11 @@ public class App {
         System.out.println("Saldo da conta:");
         conta.saldoConta = scanner.nextFloat();
         conta.transferenciasRealizadas = 0;
+        scanner.close();
         System.out.println(conta.toString());
 
     }
+
     public static void menu() {
         System.out.println("Menu:");
         System.out.println("1 - criar conta:");
