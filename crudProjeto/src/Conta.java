@@ -8,7 +8,7 @@ import java.util.Arrays;
 public class Conta {
     protected int idConta;
     protected String nomePessoa;
-    protected String[] email = new String[10];
+    protected String[] email;
     protected String nomeUsuario;
     protected String senha;
     protected String cpf;
@@ -39,7 +39,6 @@ public class Conta {
         //Este metodo converte a conta instanciada em um vetor de byte.
         ByteArrayOutputStream vetorByte = new ByteArrayOutputStream();//Escrita
         DataOutputStream buffer = new DataOutputStream(vetorByte);//Escrita|buffer?
-        System.out.println("printando ID da conta no metodo converteContaByte " + idConta);
         buffer.writeInt(idConta);
         buffer.writeUTF(nomePessoa);
         for (int i = 0; i < email.length; i++) {
@@ -61,16 +60,18 @@ public class Conta {
         idConta = leitura.readInt();
         nomePessoa = leitura.readUTF();
         for (int i = 0; i < email.length; i++) {
+            System.out.println("Entrou no loop");
             email[i] = leitura.readUTF();
+            System.out.println(email[i]);
         }
         nomeUsuario = leitura.readUTF();
         senha = leitura.readUTF();
         cpf = leitura.readUTF();
         cidade = leitura.readUTF();
         transferenciasRealizadas = leitura.readInt();
-        saldoConta = leitura.readFloat(); 
+        saldoConta = leitura.readFloat();
+        
     }
-
 
     @Override
     public String toString() {

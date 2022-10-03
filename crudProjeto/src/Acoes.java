@@ -1,5 +1,6 @@
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.util.Scanner;
 
 public class Acoes {
@@ -89,6 +90,9 @@ public class Acoes {
         if (crud.criarConta(conta)) {
             System.out.println("Conta criada com sucesso");
             System.out.println(conta.toString());
+            // RandomAccessFile arq = new RandomAccessFile("conta.db", "rw");
+            // arq.seek(0);
+            // System.out.println(arq.readInt());
         }
 
     }
