@@ -4,7 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
-public class Conta {
+public class Conta implements Comparable<Conta> {
     protected int idConta;
     protected String nomePessoa;
     protected String email;
@@ -67,6 +67,10 @@ public class Conta {
                 + ", nomeUsuario=" + nomeUsuario + ", senha=" + senha + ", cpf=" + cpf + ", cidade="
                 + cidade + ", transferenciasRealizadas=" + transferenciasRealizadas
                 + ", saldoConta=" + saldoConta + "]";
+    }
+    @Override
+    public int compareTo(Conta o) {
+        return this.idConta - o.idConta;
     }
 
     

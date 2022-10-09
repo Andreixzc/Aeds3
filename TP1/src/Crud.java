@@ -164,9 +164,9 @@ public class Crud {
     }
 
     public static Conta createAccount() {
-
+        int  id = (int) (Math.random() * 100);
         Conta conta =
-                new Conta(getLastId(), "andrei", "mail", "nomeUser", "senha", "123", "ita", 0, 2f);
+                new Conta(id, "andrei", "mail", "nomeUser", "senha", "123", "ita", 0, 2f);
         return conta;
     }
 

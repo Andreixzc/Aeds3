@@ -5,11 +5,16 @@ public class App {
 
     public static void main(String[] args) throws Exception {
             Scanner scanner = new Scanner(System.in);
-            int opcao = -1;
-            while (opcao!=0) {
-                menu();
-                opcao = Integer.parseInt(scanner.nextLine());  
+            Crud crud = new Crud();
+            for (int i = 0; i < 30; i++) {
+                Crud.writeAccount(Crud.createAccount());
             }
+            System.out.println(Crud.listAccouts());
+            // int opcao = -1;
+            // while (opcao!=0) {
+            //     menu();
+            //     opcao = Integer.parseInt(scanner.nextLine());  
+            // }
 
     }
 
