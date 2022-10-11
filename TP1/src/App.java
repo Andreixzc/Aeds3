@@ -9,7 +9,9 @@ public class App {
             for (int i = 0; i < 30; i++) {
                 Crud.writeAccount(Crud.createAccount());
             }
-            System.out.println(Crud.listAccouts());
+            Crud.listAccouts();
+            
+            // System.out.println(Crud.listAccouts());
             // int opcao = -1;
             // while (opcao!=0) {
             //     menu();

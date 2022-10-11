@@ -57,6 +57,7 @@ public class Crud {
                     Conta conta = new Conta();
                     conta.decodificaByteArray(array);
                     contas.add(conta);
+                    System.out.print(conta.idConta+",");
                 }
             }
             arquivo.close();

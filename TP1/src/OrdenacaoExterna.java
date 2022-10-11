@@ -10,105 +10,79 @@ import java.util.Vector;
 
 public class OrdenacaoExterna {
     final static String nomeArquivo = "conta.db";
-    final static String tempFile1 = "temp1.db";
-    final static String tempFile2 = "temp2.db";
+    final static String prefixo = ".db";
+    final static int ramSize = 4;
+    static long ptrControl = 4;
     public static void main(String[] args) {
-        caralho();
-        listAccouts(tempFile1);
-        System.out.println("-------------------------------------------------------------------------------");
-        listAccouts(tempFile2);
+        dist(5, 2);
+        listAccouts("tmp0.db");
+        System.out.println("---------------");
+        listAccouts("tmp1.db");
     }
-    
-    public static void sort() {
-        char lapide;
-        int tamanho;
-        byte vetor[];
-        int cont = 0;
-        ArrayList<Conta> contas = new ArrayList<>();
+    public static void dist(int ram, int caminhos) {
         try {
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
-            RandomAccessFile tmp1 = new RandomAccessFile(tempFile1, "rw");
-            RandomAccessFile tmp2 = new RandomAccessFile(tempFile2, "rw");
-            RandomAccessFile temp = tmp1;
-            arquivo.seek(4);
-            while (arquivo.getFilePointer() != -1) {
-                lapide = arquivo.readChar();
-                tamanho = arquivo.readInt();
-                vetor = new byte[tamanho];
-                arquivo.read(vetor);
-                if (lapide != '*') {
-                    Conta conta = new Conta();
-                    conta.decodificaByteArray(vetor);
-                    contas.add(conta);
-                }
-                if (contas.size() == 4) {
+            ArrayList<Conta> contas = new ArrayList<>();
+            RandomAccessFile temp[] = new RandomAccessFile[caminhos];
+            for (int i = 0; i < caminhos; i++) {
+                temp[i] = new RandomAccessFile("tmp" + i + prefixo, "rw");
+            }
+            while (ptrControl != -1) {
+                for (int i = 0; i < caminhos; i++) {
+                    for (int j = 0; j < ram; j++) {
+                        contas.add(readFile(nomeArquivo));
+                    }
                     Collections.sort(contas);
                     for (Conta conta : contas) {
                         byte ba[] = conta.converteContaEmByte();
-                        temp.write(ba);
-                        cont++;
-                        if (cont % 4 == 0) {
-                            if (temp == tmp1) {
-                                temp = tmp2;
-                            } else {
-                                temp = tmp1;
-                            }
-                        }
-                    }
+                        temp[i].writeChar(' ');
+                        temp[i].writeInt(ba.length);
+                        temp[i].write(ba);
+                    } 
+                    contas.clear();
                 }
-            }
+            }  
         } catch (Exception e) {
-            e.printStackTrace();
+            
         }
     }
 
-    public static void caralho(){
+    public static void intercalacao(int ram, int caminhos){
         try {
-            ArrayList <Conta> contas = new ArrayList<>();
-            RandomAccessFile arquivo = new RandomAccessFile(nomeArquivo, "rw");
-            RandomAccessFile tmp1 = new RandomAccessFile(tempFile1, "rw");
-            RandomAccessFile tmp2 = new RandomAccessFile(tempFile2, "rw");
-            RandomAccessFile temp = tmp1;
-            char lapide;
-            int tamanho;
-            byte[] vetor;
-            int cont = 0;
-            arquivo.seek(4);
-            while (arquivo.getFilePointer()!= -1) {
-
-                lapide = arquivo.readChar();
-                tamanho = arquivo.readInt();
-                vetor = new byte[tamanho];
-                arquivo.read(vetor);
-                if (lapide!= '*') {
-                    Conta conta = new Conta();
-                    conta.decodificaByteArray(vetor);
-                    contas.add(conta);
-                }
-                if (contas.size() == 4) {
-                    Collections.sort(contas);
-                    for (Conta conta : contas) {
-                        byte ba[] = conta.converteContaEmByte();
-                        temp.writeChar(' ');
-                        temp.writeInt(ba.length);
-                        temp.write(ba);
-                        cont++;
-                        if (cont % 4 == 0) {
-                            if (temp == tmp1) {
-                                temp = tmp2;
-                            } else {
-                                temp = tmp1;
-                            }
-                        }
-                    }
-                    contas.clear();
-                }
-                
-            }
+            
         } catch (Exception e) {
             // TODO: handle exception
         }
     }
+
+
+    public static Conta readFile(String fileName) {
+        char lapide;
+        int tamanho;
+        byte[] ba;
+        try {
+            RandomAccessFile file = new RandomAccessFile(fileName, "rw");
+            file.seek(ptrControl);
+            if (file.getFilePointer() != -1) {
+                lapide = file.readChar();
+                tamanho = file.readInt();
+                ba = new byte[tamanho];
+                file.read(ba);
+                ptrControl = file.getFilePointer();
+                if (lapide != '*') {
+                    Conta conta = new Conta();
+                    conta.decodificaByteArray(ba);
+                    return conta;
+                }
+            }
+        } catch (Exception e) {
+            
+        }
+        return null;
+
+    }
+
+
+
     public static ArrayList<Conta> listAccouts(String nome) {
         ArrayList<Conta> contas = new ArrayList<>();
         byte[] array;
@@ -123,15 +97,34 @@ public class OrdenacaoExterna {
                 if (lapide != '*') {
                     Conta conta = new Conta();
                     conta.decodificaByteArray(array);
-                    System.out.print(conta.idConta+" ");
+                    System.out.print(conta.idConta + " ");
                     contas.add(conta);
-                    
+
                 }
             }
             arquivo.close();
         } catch (Exception e) {
         }
         return contas;
-    }    
+    }
+
+
+    public void readRegister(RandomAccessFile file) {
+
+        char lapide;
+        int tamanho;
+        byte ba[];
+        try {
+            while (file.getFilePointer() != -1) {
+                lapide = file.readChar();
+                tamanho = file.readInt();
+                ba = new byte[tamanho];
+                Conta conta = new Conta();
+            }
+        } catch (Exception e) {
+            // TODO: handle exception
+        }
+    }
+
 }
 
