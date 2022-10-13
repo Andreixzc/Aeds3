@@ -91,35 +91,7 @@ public class OrdenacaoExterna {
 
 
     public static void intercalacaoLuiz(int ram, int caminhos) {
-        try {
-            ArrayList<Conta> contas = new ArrayList<>();
-            RandomAccessFile temp[] = new RandomAccessFile[caminhos];
-            RandomAccessFile temp2[] = new RandomAccessFile[caminhos];
-            for (int i = 0; i < caminhos; i++) {
-                temp[i] = new RandomAccessFile("tmp" + i + prefixo, "rw");
-                temp2[i] = new RandomAccessFile("tmp2" + i + prefixo, "rw");
-            }
-            boolean moreInput = true;
-            int i = 0;
-            int tam = temp.length;
-            long arrayPtr[] = new long[caminhos];
-            while (moreInput) {
-                /*
-                 * Abrir arq1 e arq2 Extrair conta arq1 e arq2 Comparar o menor Escrever o menor no
-                 * temp2 Incrementar o ponteiro do arquivo menor Enquanto os ponteiros do arquivo
-                 * não forem -1;
-                 */
-                for (int j = 0; j < tam; j++) {
-                    temp[j].seek(temp[j].getFilePointer()+2);
-                    int tamanhoReg = temp[j].readInt();
-                    byte ba[] = new byte[tamanhoReg];
-                    temp[j].read(ba);
-                    Conta conta = new Conta();
-                    conta.decodificaByteArray(ba);
-                }
-                // [][][][][] i
-                // [][][][][] i + 1
-                // [][][][][][][][][][]
+     
 
             }
 
